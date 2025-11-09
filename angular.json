@@ -30,18 +30,9 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/primeng/resources/themes/saga-orange/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/primeflex/primeflex.css",
               "src/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {

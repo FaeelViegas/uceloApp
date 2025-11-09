@@ -19,7 +19,6 @@
     "@angular/platform-browser-dynamic": "^20.3.10",
     "@angular/platform-server": "^20.3.10",
     "@angular/router": "^20.3.10",
-    "@angular/ssr": "^20.3.9",
     "@primeuix/themes": "^1.2.5",
     "express": "^4.18.2",
     "primeflex": "^4.0.0",

@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+
 // PrimeNG
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -24,7 +25,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     AppComponent
   ],
   imports: [
-    BrowserModule,
+ BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
