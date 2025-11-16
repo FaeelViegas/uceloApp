@@ -25,7 +25,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     AppComponent
   ],
   imports: [
- BrowserModule,
+    BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -37,7 +37,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     InputTextModule,
     PasswordModule,
     DividerModule,
-    MenuModule
+    MenuModule,
   ],
   providers: [
     MessageService,

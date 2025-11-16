@@ -1,0 +1,192 @@
+// Variáveis
+$primary-color: #0d7ff2;
+$text-color: #333;
+$light-bg: #f8f9fa;
+$border-color: #e9ecef;
+$shadow-color: rgba(0, 0, 0, 0.1);
+$header-height: 60px;
+$transition-time: 0.2s;
+
+// Container principal do topbar
+.topbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $header-height;
+    background-color: white;
+    box-shadow: 0 1px 3px $shadow-color;
+    z-index: 1000;
+}
+
+// Container interno com largura máxima
+.topbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+// Seção de logo e marca
+.topbar-brand {
+    display: flex;
+    align-items: center;
+
+    .topbar-logo {
+        height: 32px;
+        width: auto;
+        margin-right: 12px;
+    }
+
+    .topbar-title {
+        color: $primary-color;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+    }
+}
+
+// Container do menu de usuário
+.user-menu-container {
+    position: relative;
+}
+
+// Botão do menu de usuário
+.user-menu-button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color $transition-time;
+
+    &:hover {
+        background-color: $light-bg;
+    }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: $primary-color;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 10px;
+    }
+
+    .user-email {
+        margin-right: 8px;
+        color: $text-color;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        @media (max-width: 768px) {
+            display: none;
+        }
+    }
+
+    .dropdown-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform $transition-time;
+
+        &.active {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+// Dropdown do menu
+.user-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    width: 220px;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity $transition-time, transform $transition-time, visibility $transition-time;
+    z-index: 1001;
+    border: 1px solid $border-color;
+    overflow: hidden;
+
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+// Menu interno dropdown
+.dropdown-menu {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+}
+
+// Item do dropdown
+.dropdown-item {
+    margin: 0;
+
+    a {
+        display: flex;
+        align-items: center;
+        padding: 10px 16px;
+        text-decoration: none;
+        color: $text-color;
+        transition: background-color $transition-time;
+
+        i {
+            margin-right: 10px;
+            color: #6c757d;
+            font-size: 16px;
+            width: 16px;
+            text-align: center;
+        }
+
+        span {
+            font-size: 14px;
+        }
+
+        &:hover {
+            background-color: $light-bg;
+            color: $primary-color;
+
+            i {
+                color: $primary-color;
+            }
+        }
+    }
+}
+
+// Separador de itens do menu
+.dropdown-divider {
+    height: 1px;
+    background-color: $border-color;
+    margin: 6px 0;
+}
+
+// Responsividade
+@media (max-width: 576px) {
+    .topbar-container {
+        padding: 0 12px;
+    }
+
+    .topbar-title {
+        display: none;
+    }
+}

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CardModule } from 'primeng/card';
@@ -10,6 +10,10 @@ import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RippleModule } from 'primeng/ripple';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -33,6 +37,7 @@ const routes: Routes = [
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        FormsModule,
         RouterModule.forChild(routes),
         CardModule,
         ButtonModule,
@@ -40,7 +45,11 @@ const routes: Routes = [
         PasswordModule,
         DividerModule,
         ProgressSpinnerModule,
-        RippleModule
+        RippleModule,
+        CheckboxModule,
+        FloatLabelModule,
+        InputIconModule,
+        IconFieldModule
     ]
 })
 export class AuthModule { }

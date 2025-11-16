@@ -1,0 +1,73 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <div class="title-container">
+      <h1 class="page-title">Ucelo Services</h1>
+      <div class="title-divider"></div>
+      <h2 class="page-subtitle">Painel de Controle</h2>
+    </div>
+    <p class="welcome-text">Bem-vindo(a) ao sistema de cálculos para elevadores de canecas</p>
+  </div>
+
+  <!-- Cabeçalho da seção disponíveis -->
+  <div class="section-header">
+    <div class="section-title">Cálculos Disponíveis</div>
+  </div>
+  <div class="card-grid">
+    <!-- Card de Cálculo de Potência -->
+    <div class="dashboard-card">
+      <div class="card-icon-container">
+        <i class="pi pi-bolt"></i>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Cálculo de Potência</h3>
+        <p class="card-description">
+          Calcule a potência necessária para o motor do elevador com base em parâmetros técnicos.
+        </p>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary" routerLink="/calculators/power">
+          <span>Acessar</span>
+          <i class="pi pi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Card de Cálculo de Tensão -->
+    <div class="dashboard-card disabled">
+      <div class="card-icon-container">
+        <i class="pi pi-sync"></i>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Cálculo de Tensão</h3>
+        <p class="card-description">
+          Calcule a tensão efetiva, máxima e por largura para correias transportadoras.
+        </p>
+      </div>
+      <div class="card-footer">
+        <div class="coming-soon-badge">
+          <i class="pi pi-clock"></i>F
+          <span>Em breve</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card de Comparativo de Canecas -->
+    <div class="dashboard-card">
+      <div class="card-icon-container">
+        <i class="pi pi-chart-bar"></i>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Comparativo de Canecas</h3>
+        <p class="card-description">
+          Compare diferentes modelos de canecas com base em performance esperada.
+        </p>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary" routerLink="/calculators/comparison">
+          <span>Acessar</span>
+          <i class="pi pi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

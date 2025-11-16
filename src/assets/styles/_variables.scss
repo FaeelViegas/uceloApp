@@ -1,0 +1,41 @@
+// Cores principais
+$primary-blue: #1a56f0;
+$primary-blue-light: #4d7bf9;
+$primary-blue-dark: #0c3dbd;
+
+// Gradientes
+$primary-gradient: linear-gradient(135deg, $primary-blue 0%, $primary-blue-dark 100%);
+$secondary-gradient: linear-gradient(135deg, $primary-blue-light 0%, $primary-blue 100%);
+
+// Cores de texto
+$text-light: #ffffff;
+$text-dark: #333333;
+$text-muted: #6c757d;
+
+// Cores de background
+$bg-light: #f8f9fa;
+$bg-white: #ffffff;
+$bg-dark: #343a40;
+
+// Cores de estado
+$success: #28a745;
+$warning: #ffc107;
+$danger: #dc3545;
+$info: #17a2b8;
+
+// Bordas e sombras
+$border-color: rgba(0, 0, 0, 0.1);
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+// Transições
+$transition-speed: 0.25s;
+$transition-function: ease-in-out;
+
+// Tamanhos
+$sidebar-width: 240px;
+$topbar-height: 60px;
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;

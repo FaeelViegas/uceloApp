@@ -1,0 +1,624 @@
+<div class="calculator-container">
+  <div class="calculator-content">
+    <h1 class="page-title">Comparativo de Canecas</h1>
+
+    <!-- Formulário de parâmetros -->
+    <div class="card parameter-card">
+      <div class="card-header">
+        <h2>Parâmetros de Entrada</h2>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="calculationForm" (ngSubmit)="calculate()">
+          <div class="form-grid">
+            <!-- Primeira linha de parâmetros -->
+            <div class="form-row">
+              <!-- Velocidade -->
+              <div class="form-field">
+                <label for="speed">Velocidade</label>
+                <div class="input-container">
+                  <input type="number" id="speed" formControlName="speed" step="0.1">
+                  <span class="unit">m/s</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('speed', 0.1)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('speed', 0.1)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Densidade do Produto -->
+              <div class="form-field">
+                <label for="productDensity">Densidade do Produto</label>
+                <div class="input-container">
+                  <input type="number" id="productDensity" formControlName="productDensity">
+                  <span class="unit">kg/m³</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('productDensity', 10)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('productDensity', 10)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Segunda linha de parâmetros -->
+            <div class="form-row">
+              <!-- Número de fileiras -->
+              <div class="form-field">
+                <label for="numberOfRows">Nº de Fileiras</label>
+                <div class="input-container">
+                  <input type="number" id="numberOfRows" formControlName="numberOfRows">
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('numberOfRows')">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('numberOfRows')">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Passo -->
+              <div class="form-field">
+                <label for="pitch">Passo</label>
+                <div class="input-container">
+                  <input type="number" id="pitch" formControlName="pitch">
+                  <span class="unit">mm</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('pitch', 10)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('pitch', 10)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Enchimento -->
+              <div class="form-field">
+                <label for="filling">Enchimento</label>
+                <div class="input-container">
+                  <input type="number" id="filling" formControlName="filling">
+                  <span class="unit">%</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('filling', 5)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('filling', 5)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terceira linha de parâmetros - DROPDOWN PERSONALIZADO -->
+            <div class="form-row">
+              <!-- Caneca Selecionada -->
+              <div class="form-field">
+                <label for="selectedBucketId">Caneca Selecionada</label>
+                <div class="custom-dropdown-container">
+                  <div class="custom-dropdown" (click)="toggleDropdown('selectedBucketDropdown')">
+                    <input type="text" id="selectedBucketDisplay" [value]="getSelectedBucketLabel('selectedBucketId')"
+                      readonly placeholder="Selecione uma caneca">
+                    <div class="dropdown-arrow">&#9662;</div>
+                  </div>
+                  <div class="dropdown-options" id="selectedBucketDropdown">
+                    <div class="dropdown-search">
+                      <input type="text" placeholder="Buscar canecas..."
+                        (input)="filterOptions('selectedBucketSearch', 'selectedBucketOptions')"
+                        id="selectedBucketSearch">
+                    </div>
+                    <div class="dropdown-options-list" id="selectedBucketOptions">
+                      <div *ngFor="let bucket of bucketOptions" class="option-item"
+                        (click)="selectOption('selectedBucketId', bucket.value, 'selectedBucketDropdown', bucket.label)">
+                        {{ bucket.label }}
+                      </div>
+                    </div>
+                  </div>
+                  <select formControlName="selectedBucketId" style="display: none;">
+                    <option *ngFor="let bucket of bucketOptions" [value]="bucket.value">
+                      {{ bucket.label }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Preço unitário da caneca selecionada -->
+              <div class="form-field">
+                <label for="selectedBucketUnitPrice">Preço/Unidade</label>
+                <div class="input-container">
+                  <input type="number" id="selectedBucketUnitPrice" formControlName="selectedBucketUnitPrice">
+                  <span class="unit">R$</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('selectedBucketUnitPrice', 5)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('selectedBucketUnitPrice', 5)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quarta linha de parâmetros - DROPDOWN PERSONALIZADO -->
+            <div class="form-row">
+              <!-- Caneca para Comparação -->
+              <div class="form-field">
+                <label for="comparisonBucketId">Caneca para Comparação</label>
+                <div class="custom-dropdown-container">
+                  <div class="custom-dropdown" (click)="toggleDropdown('comparisonBucketDropdown')">
+                    <input type="text" id="comparisonBucketDisplay"
+                      [value]="getSelectedBucketLabel('comparisonBucketId')" readonly
+                      placeholder="Selecione uma caneca">
+                    <div class="dropdown-arrow">&#9662;</div>
+                  </div>
+                  <div class="dropdown-options" id="comparisonBucketDropdown">
+                    <div class="dropdown-search">
+                      <input type="text" placeholder="Buscar canecas..."
+                        (input)="filterOptions('comparisonBucketSearch', 'comparisonBucketOptions')"
+                        id="comparisonBucketSearch">
+                    </div>
+                    <div class="dropdown-options-list" id="comparisonBucketOptions">
+                      <div *ngFor="let bucket of bucketOptions" class="option-item"
+                        (click)="selectOption('comparisonBucketId', bucket.value, 'comparisonBucketDropdown', bucket.label)">
+                        {{ bucket.label }}
+                      </div>
+                    </div>
+                  </div>
+                  <select formControlName="comparisonBucketId" style="display: none;">
+                    <option *ngFor="let bucket of bucketOptions" [value]="bucket.value">
+                      {{ bucket.label }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Preço unitário da caneca de comparação -->
+              <div class="form-field">
+                <label for="comparisonBucketUnitPrice">Preço/Unidade</label>
+                <div class="input-container">
+                  <input type="number" id="comparisonBucketUnitPrice" formControlName="comparisonBucketUnitPrice">
+                  <span class="unit">R$</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('comparisonBucketUnitPrice', 5)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('comparisonBucketUnitPrice', 5)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botões de ação -->
+            <div class="form-row">
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" (click)="resetForm()">
+                  <i class="pi pi-refresh"></i> Limpar
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="calculating">
+                  <i class="pi pi-calculator"></i> Calcular
+                  <span class="loading-spinner" *ngIf="calculating"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Resultados do Cálculo -->
+    <div class="card results-card" *ngIf="calculationResult">
+      <div class="card-header">
+        <h2>Resultados da Comparação</h2>
+        <button type="button" class="btn-save" (click)="openSaveDialog()">
+          <i class="pi pi-save"></i> Salvar
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="comparison-container">
+          <!-- Tabela de comparação -->
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Característica</th>
+                <th>{{ calculationResult.selectedBucket.code }}</th>
+                <th>{{ calculationResult.comparisonBucket.code }}</th>
+                <th>Diferença</th>
+                <th class="visual-column">Comparação Visual</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dimensões -->
+              <tr>
+                <td>Dimensões</td>
+                <td>{{ calculationResult.selectedBucket.dimensions }}</td>
+                <td>{{ calculationResult.comparisonBucket.dimensions }}</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.dimensionsDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.dimensionsDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.dimensionsDifference"></div>
+                    <div class="labels">
+                      <span class="first-label">{{ calculationResult.selectedBucket.code }}</span>
+                      <span class="second-label">{{ calculationResult.comparisonBucket.code }}</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Volume da caneca -->
+              <tr>
+                <td>Volume</td>
+                <td>{{ calculationResult.selectedBucket.volume }} L</td>
+                <td>{{ calculationResult.comparisonBucket.volume }} L</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.volumeDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.volumeDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.volumeDifference"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Canecas/metro -->
+              <tr>
+                <td>Canecas/metro</td>
+                <td>{{ calculationResult.selectedBucket.bucketsPerMeter }}</td>
+                <td>{{ calculationResult.comparisonBucket.bucketsPerMeter }}</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.bucketsPerMeterDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.bucketsPerMeterDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.bucketsPerMeterDifference"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Capacidade -->
+              <tr>
+                <td>Capacidade</td>
+                <td>{{ calculationResult.selectedBucket.capacity }} t/h</td>
+                <td>{{ calculationResult.comparisonBucket.capacity }} t/h</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.capacityDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.capacityDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.capacityDifference"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Volume de borda -->
+              <tr>
+                <td>Volume de borda</td>
+                <td>{{ calculationResult.selectedBucket.edgeVolume }} cm³</td>
+                <td>{{ calculationResult.comparisonBucket.edgeVolume }} cm³</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.edgeVolumeDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.edgeVolumeDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.edgeVolumeDifference"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Material -->
+              <tr>
+                <td>Material</td>
+                <td>{{ calculationResult.selectedBucket.materialName }}</td>
+                <td>{{ calculationResult.comparisonBucket.materialName }}</td>
+                <td></td>
+                <td class="visual-column">
+                  <div class="material-comparison">
+                    <i class="pi"
+                      [ngClass]="calculationResult.selectedBucket.materialName === calculationResult.comparisonBucket.materialName ? 'pi-check' : 'pi-times'"></i>
+                    <span>{{ calculationResult.selectedBucket.materialName ===
+                      calculationResult.comparisonBucket.materialName ? 'Mesmo material' : 'Materiais diferentes'
+                      }}</span>
+                  </div>
+                </td>
+              </tr>
+              <!-- Resistência à abrasão -->
+              <tr>
+                <td>Resistência à abrasão</td>
+                <td>{{ calculationResult.selectedBucket.abrasionResistance }}</td>
+                <td>{{ calculationResult.comparisonBucket.abrasionResistance }}</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.abrasionResistanceDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.abrasionResistanceDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.abrasionResistanceDifference"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Resistência à tração -->
+              <tr>
+                <td>Resistência à tração</td>
+                <td>{{ calculationResult.selectedBucket.tractionResistance }} N</td>
+                <td>{{ calculationResult.comparisonBucket.tractionResistance }} N</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.tractionResistanceDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.tractionResistanceDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.tractionResistanceDifference"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Deslocamento -->
+              <tr>
+                <td>Deslocamento</td>
+                <td>{{ calculationResult.selectedBucket.displacement }} mm</td>
+                <td>{{ calculationResult.comparisonBucket.displacement }} mm</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.displacementDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.displacementDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.displacementDifference"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Preço unitário -->
+              <tr>
+                <td>Preço unitário</td>
+                <td>R$ {{ calculationResult.selectedBucket.unitPrice }}</td>
+                <td>R$ {{ calculationResult.comparisonBucket.unitPrice }}</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.pricePerUnitDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.pricePerUnitDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator price">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.pricePerUnitDifference"></div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Preço por metro -->
+              <tr>
+                <td>Preço por metro</td>
+                <td>R$ {{ calculationResult.selectedBucket.pricePerMeter }}</td>
+                <td>R$ {{ calculationResult.comparisonBucket.pricePerMeter }}</td>
+                <td class="difference"
+                  [ngClass]="getDifferenceClass(calculationResult.comparisonResult.pricePerMeterDifference)">
+                  {{ formatDifference(calculationResult.comparisonResult.pricePerMeterDifference) }}
+                </td>
+                <td class="visual-column">
+                  <div class="visual-indicator price">
+                    <div class="visual-bar first" [style.width.%]="100"></div>
+                    <div class="visual-bar second"
+                      [style.width.%]="100 + calculationResult.comparisonResult.pricePerMeterDifference"></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Gráficos de Comparação -->
+        <div class="comparison-charts">
+          <div class="charts-container">
+            <!-- Gráfico de barras -->
+            <!-- <div class="chart-card">
+              <h3>Comparação Visual</h3>
+              <p-chart type="bar" [data]="barChartData" [options]="barChartOptions"></p-chart>
+            </div> -->
+
+            <!-- Gráfico de radar -->
+            <div class="chart-card">
+              <h3>Análise Multiparâmetro</h3>
+              <p-chart type="radar" [data]="radarChartData" [options]="radarChartOptions"></p-chart>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recomendação -->
+        <div class="comparison-summary">
+          <h3>Recomendação</h3>
+
+          <!-- Cards de destaque por categoria -->
+          <div class="recommendation-cards">
+            <div class="recommendation-card" *ngIf="calculationResult.comparisonResult.capacityDifference !== 0">
+              <div class="card-header">
+                <i class="pi pi-bolt"></i>
+                <h4>Capacidade</h4>
+              </div>
+              <div class="card-content">
+                <div class="winner-badge"
+                  [ngClass]="calculationResult.comparisonResult.capacityDifference > 0 ? 'second-wins' : 'first-wins'">
+                  <i class="pi pi-check-circle"></i>
+                  <span>{{ calculationResult.comparisonResult.capacityDifference > 0 ?
+                    calculationResult.comparisonBucket.code : calculationResult.selectedBucket.code }}</span>
+                </div>
+                <p>{{ calculationResult.comparisonResult.capacityDifference > 0 ? 'Superior' : 'Inferior' }} em {{
+                  formatDifferenceAbs(calculationResult.comparisonResult.capacityDifference) }}%</p>
+              </div>
+            </div>
+
+            <div class="recommendation-card"
+              *ngIf="calculationResult.comparisonResult.tractionResistanceDifference !== 0">
+              <div class="card-header">
+                <i class="pi pi-shield"></i>
+                <h4>Resistência</h4>
+              </div>
+              <div class="card-content">
+                <div class="winner-badge"
+                  [ngClass]="calculationResult.comparisonResult.tractionResistanceDifference > 0 ? 'second-wins' : 'first-wins'">
+                  <i class="pi pi-check-circle"></i>
+                  <span>{{ calculationResult.comparisonResult.tractionResistanceDifference > 0 ?
+                    calculationResult.comparisonBucket.code : calculationResult.selectedBucket.code }}</span>
+                </div>
+                <p>{{ calculationResult.comparisonResult.tractionResistanceDifference > 0 ? 'Superior' : 'Inferior' }}
+                  em {{ formatDifferenceAbs(calculationResult.comparisonResult.tractionResistanceDifference) }}%</p>
+              </div>
+            </div>
+
+            <div class="recommendation-card" *ngIf="calculationResult.comparisonResult.pricePerMeterDifference !== 0">
+              <div class="card-header">
+                <i class="pi pi-money-bill"></i>
+                <h4>Custo-benefício</h4>
+              </div>
+              <div class="card-content">
+                <div class="winner-badge"
+                  [ngClass]="calculationResult.comparisonResult.pricePerMeterDifference < 0 ? 'second-wins' : 'first-wins'">
+                  <i class="pi pi-check-circle"></i>
+                  <span>{{ calculationResult.comparisonResult.pricePerMeterDifference < 0 ?
+                      calculationResult.comparisonBucket.code : calculationResult.selectedBucket.code }}</span>
+                </div>
+                <p>{{ calculationResult.comparisonResult.pricePerMeterDifference < 0 ? 'Mais econômico' : 'Mais caro' }}
+                    em {{ formatDifferenceAbs(calculationResult.comparisonResult.pricePerMeterDifference) }}%</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conclusão e recomendação final -->
+          <div class="final-recommendation">
+            <div class="recommendation-header">
+              <i class="pi pi-star"></i>
+              <h3>Conclusão</h3>
+            </div>
+
+            <div class="recommendation-text">
+              <p *ngIf="calculationResult.comparisonResult.capacityDifference > 10">
+                A caneca <strong>{{ calculationResult.comparisonBucket.code }}</strong> ({{
+                calculationResult.comparisonBucket.materialName }})
+                oferece uma capacidade {{ formatDifference(calculationResult.comparisonResult.capacityDifference) }}
+                superior, o que pode melhorar significativamente o desempenho.
+              </p>
+              <p
+                *ngIf="calculationResult.comparisonResult.capacityDifference <= 0 && calculationResult.comparisonResult.pricePerMeterDifference < 0">
+                A caneca <strong>{{ calculationResult.selectedBucket.code }}</strong> ({{
+                calculationResult.selectedBucket.materialName }})
+                tem melhor relação custo-benefício, com preço por metro mais baixo e capacidade similar ou superior.
+              </p>
+              <p
+                *ngIf="calculationResult.comparisonResult.tractionResistanceDifference > 20 && calculationResult.comparisonResult.abrasionResistanceDifference > 20">
+                A caneca <strong>{{ calculationResult.comparisonBucket.code }}</strong> ({{
+                calculationResult.comparisonBucket.materialName }})
+                apresenta resistência à tração e abrasão significativamente superiores, sendo mais adequada para
+                materiais
+                abrasivos.
+              </p>
+              <p
+                *ngIf="calculationResult.comparisonResult.tractionResistanceDifference <= 0 && calculationResult.comparisonResult.abrasionResistanceDifference <= 0 && calculationResult.comparisonResult.pricePerMeterDifference <= 0">
+                A caneca <strong>{{ calculationResult.selectedBucket.code }}</strong> ({{
+                calculationResult.selectedBucket.materialName }})
+                apresenta melhor equilíbrio entre resistência mecânica e custo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Histórico de Cálculos -->
+  <div class="history-sidebar">
+    <div class="card">
+      <div class="card-header">
+        <h2>Histórico de Cálculos</h2>
+      </div>
+      <div class="card-body">
+        <div class="search-container">
+          <input type="text" placeholder="Buscar cálculos..." [(ngModel)]="searchQuery" (keyup)="filterCalculations()">
+          <button type="button" class="btn-clear" *ngIf="searchQuery" (click)="clearSearch()">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+        <div class="sort-container">
+          <span>Ordenar por:</span>
+          <button type="button" class="btn-sort" [class.active]="currentSort === 'date'" (click)="setSortOrder('date')">
+            Data
+            <i class="pi"
+              [ngClass]="currentSort === 'date' ? (sortDirection === 'asc' ? 'pi-sort-up' : 'pi-sort-down') : 'pi-sort'"></i>
+          </button>
+          <button type="button" class="btn-sort" [class.active]="currentSort === 'capacity'"
+            (click)="setSortOrder('capacity')">
+            Capacidade
+            <i class="pi"
+              [ngClass]="currentSort === 'capacity' ? (sortDirection === 'asc' ? 'pi-sort-up' : 'pi-sort-down') : 'pi-sort'"></i>
+          </button>
+        </div>
+        <div class="history-list">
+          <div *ngFor="let calculation of filteredCalculations" class="history-item"
+            [class.active]="selectedCalculation?.id === calculation.id" (click)="loadCalculation(calculation)">
+            <div class="history-item-header">
+              <span class="history-item-name">{{ calculation.name || 'Cálculo sem nome' }}</span>
+              <span class="history-item-date">{{ calculation.calculatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="history-item-content">
+              <div class="history-item-comparison">
+                <span class="bucket-code">{{ calculation.selectedBucket.code }}</span>
+                <span class="comparison-symbol">vs</span>
+                <span class="bucket-code">{{ calculation.comparisonBucket.code }}</span>
+              </div>
+              <div class="history-item-capacity">
+                <span>Capacidade: {{ calculation.selectedBucket.capacity }} t/h</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="filteredCalculations.length === 0" class="empty-state">
+            <p *ngIf="searchQuery">Nenhum resultado encontrado para "{{ searchQuery }}"</p>
+            <p *ngIf="!searchQuery">Nenhum cálculo salvo. Realize cálculos e salve para vê-los aqui.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dialog para salvar cálculo -->
+<p-dialog [(visible)]="showSaveDialog" [modal]="true" [draggable]="false" [resizable]="false" [style]="{width: '400px'}"
+  header="Salvar Cálculo">
+  <div class="save-dialog-content">
+    <label for="calculationName">Nome do Cálculo</label>
+    <input type="text" id="calculationName" [(ngModel)]="calculationName" pInputText autofocus>
+  </div>
+  <ng-template pTemplate="footer">
+    <button type="button" class="btn btn-secondary" (click)="showSaveDialog = false">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="saveCalculation()"
+      [disabled]="saving || !calculationName.trim()">
+      <i class="pi pi-save"></i> Salvar
+      <span class="loading-spinner" *ngIf="saving"></span>
+    </button>
+  </ng-template>
+</p-dialog>

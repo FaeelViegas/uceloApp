@@ -1,3 +1,45 @@
-<p>
-  topbar works!
-</p>
+<header class="topbar">
+  <div class="topbar-container">
+    <!-- Logo e título -->
+    <div class="topbar-brand">
+      <!-- <img src="assets/icons/logouceloazul.png" alt="Logo Ucelo" class="topbar-logo"> -->
+      <!-- <h1 class="topbar-title">Ucelo Services</h1> -->
+    </div>
+
+    <!-- Menu do usuário -->
+    <div class="user-menu-container">
+      <button class="user-menu-button" (click)="toggleUserMenu($event)">
+        <div class="user-avatar">{{ userInitials }}</div>
+        <span class="user-email">{{ userEmail }}</span>
+        <span class="dropdown-icon" [class.active]="isUserMenuOpen">
+          <i class="pi pi-chevron-down"></i>
+        </span>
+      </button>
+
+      <!-- Dropdown do menu de usuário -->
+      <div class="user-dropdown" [class.visible]="isUserMenuOpen" (clickOutside)="closeUserMenu()">
+        <ul class="dropdown-menu">
+          <li class="dropdown-item">
+            <a href="javascript:void(0)" (click)="navigateToProfile()">
+              <i class="pi pi-user"></i>
+              <span>Meu Perfil</span>
+            </a>
+          </li>
+          <li class="dropdown-item">
+            <a href="javascript:void(0)" (click)="navigateToSettings()">
+              <i class="pi pi-cog"></i>
+              <span>Configurações</span>
+            </a>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li class="dropdown-item">
+            <a href="javascript:void(0)" (click)="logout()">
+              <i class="pi pi-sign-out"></i>
+              <span>Sair</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

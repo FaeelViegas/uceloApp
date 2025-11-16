@@ -1,3 +1,56 @@
-<p>
-  sidebar works!
-</p>
+<div class="sidebar">
+  <!-- Cabeçalho com Logo -->
+  <div class="sidebar-header">
+    <img src="assets/icons/logouceloazul.png" alt="Logo Ucelo" class="logo">
+    <div class="logo-title">Ucelo Services</div>
+  </div>
+
+  <!-- Menu de navegação -->
+  <nav class="sidebar-menu">
+    <!-- Item Dashboard -->
+    <a routerLink="/dashboard" routerLinkActive="active" class="menu-item">
+      <div class="menu-icon">
+        <i class="pi pi-home"></i>
+      </div>
+      <span class="menu-text">Dashboard</span>
+    </a>
+
+    <!-- Grupo Calculadoras com submenu -->
+    <div class="menu-group">
+      <!-- Título do grupo com toggle -->
+      <div class="menu-item has-submenu" [class.expanded]="calculatorsExpanded" (click)="toggleCalculators()">
+        <div class="menu-icon">
+          <i class="pi pi-calculator"></i>
+        </div>
+        <span class="menu-text">Calculadoras</span>
+        <div class="menu-arrow">
+          <i class="pi pi-chevron-down"></i>
+        </div>
+      </div>
+
+      <!-- Submenu -->
+      <div class="submenu" [class.expanded]="calculatorsExpanded">
+        <a routerLink="/calculators/power" routerLinkActive="active" class="menu-subitem">
+          <div class="menu-icon">
+            <i class="pi pi-bolt"></i>
+          </div>
+          <span class="menu-text">Cálculo de Potência</span>
+        </a>
+
+        <a class="menu-subitem disabled">
+          <div class="menu-icon">
+            <i class="pi pi-sync"></i>
+          </div>
+          <span class="menu-text">Cálculo de Tensão</span>
+        </a>
+
+        <a class="menu-subitem" routerLink="/calculators/comparison" routerLinkActive="active">
+          <div class="menu-icon">
+            <i class="pi pi-chart-bar"></i>
+          </div>
+          <span class="menu-text">Comparativo de Canecas</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+</div>

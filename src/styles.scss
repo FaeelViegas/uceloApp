@@ -1,5 +1,4 @@
-@import "primeicons/primeicons.css";
-@import "primeflex/primeflex.css";
+@import './assets/styles/variables';
 
 * {
     margin: 0;
@@ -10,19 +9,81 @@
 html,
 body {
     height: 100%;
-    font-family: var(--font-family);
-    background-color: var(--surface-ground);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: $bg-light;
+    color: $text-dark;
 }
 
 :root {
-    --primary-color: #f97316;
-    --primary-color-text: #ffffff;
-    --surface-ground: #f8fafc;
-    --surface-section: #ffffff;
-    --surface-card: #ffffff;
-    --surface-overlay: #ffffff;
-    --surface-border: #e2e8f0;
-    --surface-hover: #f1f5f9;
-    --text-color: #334155;
-    --text-color-secondary: #64748b;
+    --primary-color: #{$primary-blue};
+    --primary-color-light: #{$primary-blue-light};
+    --primary-color-dark: #{$primary-blue-dark};
+    --primary-gradient: #{$primary-gradient};
+    --secondary-gradient: #{$secondary-gradient};
+    --text-light: #{$text-light};
+    --text-dark: #{$text-dark};
+    --text-muted: #{$text-muted};
+    --bg-light: #{$bg-light};
+    --bg-white: #{$bg-white};
+    --bg-dark: #{$bg-dark};
+    --border-color: #{$border-color};
+    --transition-speed: #{$transition-speed};
+}
+
+// Estilos de botões
+.btn {
+    padding: 8px 16px;
+    border-radius: $border-radius-sm;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all $transition-speed $transition-function;
+
+    &.btn-primary {
+        background: $primary-gradient;
+        color: $text-light;
+
+        &:hover {
+            box-shadow: $shadow-md;
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    &.btn-secondary {
+        background-color: $bg-white;
+        color: $primary-blue;
+        border: 1px solid $primary-blue;
+
+        &:hover {
+            background-color: rgba($primary-blue, 0.05);
+        }
+    }
+}
+
+// Estilos de cards
+.card {
+    background-color: $bg-white;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+    transition: box-shadow $transition-speed $transition-function;
+
+    &:hover {
+        box-shadow: $shadow-md;
+    }
+
+    .card-header {
+        padding: 12px 16px;
+        background: $primary-gradient;
+        color: $text-light;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
 }

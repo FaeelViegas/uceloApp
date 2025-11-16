@@ -1,0 +1,283 @@
+<div class="calculator-container">
+  <div class="calculator-content">
+    <h1 class="page-title">Cálculo de Potência</h1>
+
+    <!-- Formulário de parâmetros -->
+    <div class="card parameter-card">
+      <div class="card-header">
+        <h2>Parâmetros de Entrada</h2>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="calculationForm" (ngSubmit)="calculate()">
+          <div class="form-grid">
+            <!-- Primeira linha de parâmetros -->
+            <div class="form-row">
+              <!-- Altura do Elevador -->
+              <div class="form-field">
+                <label for="height">Altura do Elevador</label>
+                <div class="input-container">
+                  <input type="number" id="height" formControlName="height">
+                  <span class="unit">m</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('height')">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('height')">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rotação do Tambor -->
+              <div class="form-field">
+                <label for="rotation">Rotação do Tambor</label>
+                <div class="input-container">
+                  <input type="number" id="rotation" formControlName="rotation">
+                  <span class="unit">rpm</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('rotation')">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('rotation')">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Capacidade do Elevador -->
+              <div class="form-field">
+                <label for="capacity">Capacidade do Elevador</label>
+                <div class="input-container">
+                  <input type="number" id="capacity" formControlName="capacity">
+                  <span class="unit">t/h</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('capacity')">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('capacity')">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Segunda linha de parâmetros -->
+            <div class="form-row">
+              <!-- Gravidade -->
+              <div class="form-field">
+                <label for="gravity">Gravidade</label>
+                <div class="input-container">
+                  <input type="number" id="gravity" formControlName="gravity" step="0.01">
+                  <span class="unit">m/s²</span>
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('gravity', 0.01)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('gravity', 0.01)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rendimento Geral -->
+              <div class="form-field">
+                <label for="generalEfficiency">Rendimento Geral</label>
+                <div class="input-container">
+                  <input type="number" id="generalEfficiency" formControlName="generalEfficiency" step="0.01">
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('generalEfficiency', 0.01)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('generalEfficiency', 0.01)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Eficiência -->
+              <div class="form-field">
+                <label for="efficiency">Eficiência</label>
+                <div class="input-container">
+                  <input type="number" id="efficiency" formControlName="efficiency" step="0.01">
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('efficiency', 0.01)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('efficiency', 0.01)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terceira linha de parâmetros -->
+            <div class="form-row">
+              <!-- Fator de Potência -->
+              <div class="form-field">
+                <label for="powerFactor">Fator de Potência (cos Φ)</label>
+                <div class="input-container">
+                  <input type="number" id="powerFactor" formControlName="powerFactor" step="0.01">
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('powerFactor', 0.01)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('powerFactor', 0.01)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fator de Serviço -->
+              <div class="form-field">
+                <label for="serviceFactor">Fator de Serviço</label>
+                <div class="input-container">
+                  <input type="number" id="serviceFactor" formControlName="serviceFactor" step="0.1">
+                  <div class="spinner-buttons">
+                    <button type="button" class="spinner-up" (click)="incrementValue('serviceFactor', 0.1)">
+                      <i class="pi pi-chevron-up"></i>
+                    </button>
+                    <button type="button" class="spinner-down" (click)="decrementValue('serviceFactor', 0.1)">
+                      <i class="pi pi-chevron-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" (click)="resetForm()">
+                  <i class="pi pi-refresh"></i> Limpar
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="calculating">
+                  <i class="pi pi-calculator"></i> Calcular
+                  <span class="loading-spinner" *ngIf="calculating"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Resultados do Cálculo -->
+    <div class="card results-card" *ngIf="calculationResult">
+      <div class="card-header">
+        <h2>Resultados do Cálculo</h2>
+      </div>
+      <div class="card-body">
+        <div class="results-grid">
+          <!-- Potência do Motor (kW) -->
+          <div class="result-item">
+            <div class="result-label">Potência do Motor (kW)</div>
+            <div class="result-value">{{ calculationResult.powerKW | number:'1.2-2' }}</div>
+          </div>
+
+          <!-- Potência do Motor (CV) -->
+          <div class="result-item">
+            <div class="result-label">Potência do Motor (CV)</div>
+            <div class="result-value">{{ calculationResult.powerCV | number:'1.2-2' }}</div>
+          </div>
+
+          <!-- Momento (Nm) -->
+          <div class="result-item">
+            <div class="result-label">Momento (Nm)</div>
+            <div class="result-value">{{ calculationResult.moment | number:'1.2-2' }}</div>
+          </div>
+
+          <!-- Momento Máximo (Nm) -->
+          <div class="result-item">
+            <div class="result-label">Momento Máximo (Nm)</div>
+            <div class="result-value">{{ calculationResult.maxMoment | number:'1.2-2' }}</div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary" (click)="openSaveDialog()">
+            <i class="pi pi-save"></i> Salvar Cálculo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Histórico lateral -->
+  <div class="history-sidebar">
+    <div class="card history-card">
+      <div class="card-header">
+        <h2>Histórico de Cálculos</h2>
+      </div>
+      <div class="search-container">
+        <div class="search-input">
+          <i class="pi pi-search"></i>
+          <input type="text" placeholder="Buscar cálculos..." [(ngModel)]="searchQuery" (input)="filterCalculations()">
+          <button *ngIf="searchQuery" class="clear-search" (click)="clearSearch()">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+        <div class="sort-options">
+          <button class="sort-button" [class.active]="currentSort === 'date'" (click)="setSortOrder('date')">
+            <i class="pi pi-calendar"></i>
+            <i class="pi"
+              [ngClass]="sortDirection === 'asc' && currentSort === 'date' ? 'pi-sort-amount-up' : 'pi-sort-amount-down'"></i>
+          </button>
+          <button class="sort-button" [class.active]="currentSort === 'power'" (click)="setSortOrder('power')">
+            <i class="pi pi-bolt"></i>
+            <i class="pi"
+              [ngClass]="sortDirection === 'asc' && currentSort === 'power' ? 'pi-sort-amount-up' : 'pi-sort-amount-down'"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="history-list">
+        <div class="empty-history" *ngIf="filteredCalculations.length === 0">
+          <i class="pi pi-info-circle"></i>
+          <p *ngIf="searchQuery">Nenhum resultado encontrado para "{{searchQuery}}"</p>
+          <p *ngIf="!searchQuery">Nenhum cálculo salvo</p>
+        </div>
+
+        <div class="history-item" *ngFor="let calc of filteredCalculations"
+          [class.active]="selectedCalculation?.id === calc.id" (click)="loadCalculation(calc)">
+          <div class="history-header">
+            <h3 class="history-title">{{ calc.name }}</h3>
+            <span class="history-date">{{ calc.calculatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="history-details">
+            <span class="power-value">{{ calc.powerKW | number:'1.2-2' }} kW</span>
+            <span class="power-value-cv">({{ calc.powerCV | number:'1.2-2' }} CV)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para salvar cálculo -->
+<div class="modal-overlay" *ngIf="showSaveDialog">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Salvar Cálculo</h3>
+      <button class="close-button" (click)="showSaveDialog = false">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label for="calculationName">Nome do Cálculo</label>
+        <input type="text" id="calculationName" [(ngModel)]="calculationName"
+          placeholder="Ex: Elevador Linha 1 - Nov/2025">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="showSaveDialog = false">Cancelar</button>
+      <button class="btn btn-primary" (click)="saveCalculation()" [disabled]="saving">
+        <i class="pi pi-save"></i> Salvar
+        <span class="loading-spinner" *ngIf="saving"></span>
+      </button>
+    </div>
+  </div>
+</div>

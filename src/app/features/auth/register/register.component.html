@@ -1,3 +1,90 @@
-<p>
-  register works!
-</p>
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Cabeçalho -->
+    <div class="auth-header">
+      <img src="assets/icons/logouceloazul.png" alt="Ucelo Logo" class="logo">
+      <h2 class="title">Crie sua conta</h2>
+      <p class="subtitle">Junte-se à plataforma Ucelo Services.</p>
+    </div>
+
+    <!-- Formulário -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form-container">
+      <!-- Nome completo -->
+      <div class="form-field">
+        <div class="input-group">
+          <span class="input-icon">
+            <i class="pi pi-user"></i>
+          </span>
+          <input id="name" type="text" formControlName="name" placeholder="Nome completo" class="input-control">
+        </div>
+        <small *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="error-message">
+          Nome é obrigatório
+        </small>
+      </div>
+
+      <!-- Email -->
+      <div class="form-field">
+        <div class="input-group">
+          <span class="input-icon">
+            <i class="pi pi-envelope"></i>
+          </span>
+          <input id="email" type="email" formControlName="mail" placeholder="Email" class="input-control">
+        </div>
+        <small *ngIf="registerForm.get('mail')?.invalid && registerForm.get('mail')?.touched" class="error-message">
+          Email válido é obrigatório
+        </small>
+      </div>
+
+      <!-- Senha -->
+      <div class="form-field">
+        <div class="input-group">
+          <span class="input-icon">
+            <i class="pi pi-lock"></i>
+          </span>
+          <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="pwd" placeholder="Senha"
+            class="input-control">
+
+          <!-- Botão mostrar/esconder senha -->
+          <button type="button" (click)="togglePasswordVisibility()" class="password-toggle">
+            <i class="pi" [ngClass]="showPassword ? 'pi-eye-slash' : 'pi-eye'"></i>
+          </button>
+        </div>
+        <small *ngIf="registerForm.get('pwd')?.invalid && registerForm.get('pwd')?.touched" class="error-message">
+          Senha deve ter no mínimo 6 caracteres
+        </small>
+      </div>
+
+      <!-- Confirmar Senha -->
+      <div class="form-field">
+        <div class="input-group">
+          <span class="input-icon">
+            <i class="pi pi-lock"></i>
+          </span>
+          <input id="confirmPassword" [type]="showPassword ? 'text' : 'password'" formControlName="confirmPwd"
+            placeholder="Confirmar Senha" class="input-control">
+        </div>
+        <small *ngIf="registerForm.get('confirmPwd')?.errors?.['mismatch'] && registerForm.get('confirmPwd')?.touched"
+          class="error-message">
+          As senhas não coincidem
+        </small>
+      </div>
+
+      <!-- Botão Cadastrar -->
+      <button type="submit" class="register-button" [disabled]="loading || registerForm.invalid">
+        <i *ngIf="loading" class="pi pi-spin pi-spinner button-icon"></i>
+        <span>Cadastrar</span>
+      </button>
+
+      <!-- Link para login -->
+      <div class="login-link">
+        <span>Já tem uma conta? </span>
+        <a (click)="navigateToLogin()">Faça login</a>
+      </div>
+    </form>
+
+    <!-- Rodapé -->
+    <div class="auth-footer">
+      <p class="copyright">©2025 Ucelo Services. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</div>

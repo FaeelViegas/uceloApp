@@ -1,0 +1,577 @@
+// Variáveis
+$primary-color: #0d7ff2;
+$secondary-color: #e9f1fd;
+$text-color: #333;
+$border-color: #ddd;
+$shadow-color: rgba(0, 0, 0, 0.1);
+$transition-time: 0.25s;
+$result-bg: #fffdf5;
+
+// Container principal
+.calculator-container {
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.calculator-content {
+    flex: 1;
+    min-width: 0; // Importante para evitar estouro de layout
+}
+
+.history-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    margin-top: 47px;
+}
+
+// Estilos dos cards
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px $shadow-color;
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: box-shadow $transition-time;
+
+    &:hover {
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    &.results-card {
+        background-color: $result-bg;
+
+        .card-body {
+            padding: 20px;
+        }
+    }
+}
+
+.card-header {
+    background-color: $primary-color;
+    padding: 16px 20px;
+    color: white;
+    font-weight: 600;
+
+    h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+}
+
+.card-body {
+    padding: 20px;
+}
+
+// Título da página
+.page-title {
+    color: $primary-color;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+// Layout do formulário
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.form-field {
+    flex: 1;
+    min-width: 200px;
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: $text-color;
+        font-size: 14px;
+    }
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-left: auto;
+    align-self: flex-end;
+
+    // Alinha com a última linha se houver apenas 2 campos nela
+    @media (min-width: 768px) {
+        min-width: 200px;
+    }
+}
+
+// Estilização dos inputs
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color $transition-time, box-shadow $transition-time;
+
+    input[type="number"] {
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        -moz-appearance: textfield;
+
+        appearance: textfield;
+    }
+
+    &:focus-within {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    input {
+        flex: 1;
+        padding: 10px 40px 10px 12px;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+    }
+
+    .unit {
+        position: absolute;
+        right: 36px;
+        color: #666;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    .spinner-buttons {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 24px;
+        border-left: 1px solid $border-color;
+
+        button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #666;
+
+            &:hover {
+                background-color: darken(#f5f5f5, 5%);
+            }
+
+            &:active {
+                background-color: darken(#f5f5f5, 10%);
+            }
+
+            i {
+                font-size: 10px;
+            }
+        }
+
+        .spinner-up {
+            border-bottom: 1px solid $border-color;
+        }
+    }
+}
+
+// Grid de resultados
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.result-item {
+    background-color: white;
+    border-radius: 6px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform $transition-time, box-shadow $transition-time;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .result-label {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .result-value {
+        color: $primary-color;
+        font-size: 24px;
+        font-weight: 600;
+    }
+}
+
+// Botões
+.btn {
+    padding: 10px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color $transition-time, transform $transition-time;
+
+    i {
+        font-size: 16px;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    &:not(:disabled):active {
+        transform: translateY(1px);
+    }
+
+    &.btn-primary {
+        background-color: $primary-color;
+        color: white;
+
+        &:not(:disabled):hover {
+            background-color: darken($primary-color, 8%);
+        }
+    }
+
+    &.btn-secondary {
+        background-color: #f0f0f0;
+        color: $text-color;
+
+        &:not(:disabled):hover {
+            background-color: darken(#f0f0f0, 5%);
+        }
+    }
+}
+
+// Histórico
+.history-card {
+    height: 100%;
+
+    .card-body {
+        padding: 0;
+    }
+}
+
+.search-container {
+    padding: 16px;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.search-input {
+    position: relative;
+
+    i.pi-search {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px 36px 10px 36px;
+        border: 1px solid $border-color;
+        border-radius: 20px;
+        outline: none;
+
+        &:focus {
+            border-color: $primary-color;
+            box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+        }
+    }
+
+    .clear-search {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #666;
+        cursor: pointer;
+
+        &:hover {
+            color: $text-color;
+        }
+    }
+}
+
+.sort-options {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+    .sort-button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background-color: #f0f0f0;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color $transition-time;
+
+        &:hover {
+            background-color: darken(#f0f0f0, 5%);
+        }
+
+        &.active {
+            background-color: $secondary-color;
+            color: $primary-color;
+        }
+    }
+}
+
+.history-list {
+    height: 500px;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.empty-history {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #888;
+    text-align: center;
+
+    i {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    p {
+        margin: 0;
+    }
+}
+
+.history-item {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: transform $transition-time, box-shadow $transition-time;
+    border-left: 3px solid transparent;
+
+    &:hover {
+        background-color: #f0f4f8;
+        transform: translateX(2px);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    &.active {
+        border-left-color: $primary-color;
+        background-color: $secondary-color;
+    }
+
+    .history-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        align-items: flex-start;
+
+        .history-title {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 500;
+            color: $text-color;
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: #888;
+        }
+    }
+
+    .history-details {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+
+        .power-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: $primary-color;
+        }
+
+        .power-value-cv {
+            font-size: 14px;
+            color: #666;
+        }
+    }
+}
+
+// Modal de salvar cálculo
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s;
+}
+
+.modal-container {
+    background-color: white;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 95%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s;
+}
+
+.modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .close-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #666;
+
+        &:hover {
+            color: $text-color;
+        }
+    }
+}
+
+.modal-body {
+    padding: 20px;
+
+    .form-field {
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid $border-color;
+            border-radius: 4px;
+
+            &:focus {
+                border-color: $primary-color;
+                outline: none;
+                box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+            }
+        }
+    }
+}
+
+.modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid $border-color;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+// Animações
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+// Responsividade
+@media (max-width: 992px) {
+    .calculator-container {
+        flex-direction: column;
+    }
+
+    .history-sidebar {
+        width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

@@ -1,0 +1,201 @@
+// Variáveis de cores   
+$primary-color: #0d7ff2; // Cor azul como na imagem de referência
+$primary-hover: darken($primary-color, 5%);
+$text-dark: #1a1a1a;
+$text-gray: #6b7280;
+$border-color: #e2e8f0;
+$background: #ffffff;
+
+// Estilos gerais do container
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: $background;
+    padding: 2rem;
+}
+
+// Card principal
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba($primary-color, 0.2);
+    overflow: hidden;
+}
+
+// Cabeçalho
+.auth-header {
+    text-align: center;
+    padding: 1.5rem 1.5rem 1rem;
+
+    .logo {
+        height: 7rem;
+        width: auto;
+        margin: 0 auto 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        display: block;
+    }
+
+    .title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $primary-color;
+        margin: 0.5rem 0;
+    }
+
+    .subtitle {
+        font-size: 0.875rem;
+        color: $text-gray;
+        margin: 0.5rem 0 0;
+    }
+}
+
+// Container do formulário
+.form-container {
+    padding: 0 1.5rem 1rem;
+}
+
+// Campos do formulário
+.form-field {
+    margin-bottom: 1rem;
+}
+
+// Grupo de input com ícone
+.input-group {
+    position: relative;
+
+    .input-icon {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        padding-left: 0.75rem;
+        color: $text-gray;
+    }
+
+    .input-control {
+        width: 100%;
+        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+        border: 1px solid $border-color;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        color: $text-dark;
+        margin-bottom: 0.25rem;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 2px rgba($primary-color, 0.25);
+        }
+
+        &::placeholder {
+            color: $text-gray;
+        }
+    }
+}
+
+// Mensagens de erro
+.error-message {
+    display: block;
+    color: #ef4444;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+// Botão de toggle de senha
+.password-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    padding-right: 0.75rem;
+    color: $text-gray;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        color: $primary-color;
+        outline: none;
+    }
+}
+
+// Botão de registro
+.register-button {
+    position: relative;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: $primary-color;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+        background-color: $primary-hover;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px white, 0 0 0 4px $primary-color;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .button-icon {
+        margin-right: 0.5rem;
+    }
+}
+
+// Link para login
+.login-link {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: $text-gray;
+
+    a {
+        font-weight: 500;
+        color: $primary-color;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+            color: $primary-hover;
+        }
+    }
+}
+
+// Rodapé
+.auth-footer {
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid $border-color;
+
+    .copyright {
+        font-size: 0.75rem;
+        color: $text-gray;
+        margin: 0;
+    }
+}

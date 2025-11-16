@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { User } from '../models/user.model';
-import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.model';
+import { AuthResponse, AuthResponseFromBackend, LoginRequest, RegisterRequest, UserResponseFromBackend } from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,43 +37,79 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    credentials.name = credentials.mail;
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/user/authenticate`, credentials)
+    const backendRequest = {
+      Email: credentials.mail,
+      Password: credentials.pwd
+    };
+
+    console.log('Enviando requisição de login:', backendRequest);
+
+    return this.http.post<AuthResponseFromBackend>(`${environment.apiUrl}/Users/authenticate`, backendRequest)
       .pipe(
-        tap(response => {
+        map(response => {
           console.log('Resposta do login:', response);
-          if (response.authenticated === 1) {
-            this.setToken(response.token);
 
-            const user: User = {
-              userId: response.userId,
-              name: response.name,
-              mail: credentials.mail,
-              accountId: 0,
-              master: 0,
-              active: 1,
-              createDate: new Date(),
-              changeDate: new Date()
-            };
+          const authResponse: AuthResponse = {
+            authenticated: 1,
+            userId: 0,
+            name: credentials.mail,  // Usamos o email como nome temporariamente
+            token: response.accessToken
+          };
 
-            this.setUser(user);
-            this.currentUserSubject.next(user);
-            this.isAuthenticatedSubject.next(true);
+          this.setToken(response.accessToken);
 
-            console.log('Redirecionando para dashboard...');
-            // Usar setTimeout para evitar loops de navegação
-            setTimeout(() => {
-              this.router.navigate(['/dashboard']);
-            }, 100);
-          }
+          const user: User = {
+            userId: 0,
+            name: credentials.mail,
+            mail: credentials.mail,
+            accountId: 0,
+            master: 0,
+            active: 1,
+            createDate: new Date(),
+            changeDate: new Date()
+          };
+
+          this.setUser(user);
+          this.currentUserSubject.next(user);
+          this.isAuthenticatedSubject.next(true);
+
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 100);
+
+          return authResponse;
+        }),
+        catchError(error => {
+          console.error('Erro na requisição de login:', error);
+
+          return throwError(() => error);
         })
       );
   }
 
   register(userData: RegisterRequest): Observable<User> {
-    return this.http.post<User>(`${environment.apiUrl}/user/register`, userData)
+    const backendRequest = {
+      email: userData.mail,
+      password: userData.pwd
+    };
+
+    return this.http.post<UserResponseFromBackend>(`${environment.apiUrl}/Users`, backendRequest)
       .pipe(
-        tap(response => {
+        map(response => {
+          const user: User = {
+            userId: response.id,
+            name: userData.name,
+            mail: response.email,
+            accountId: userData.accountId || 0,
+            master: 0,
+            active: response.isActive ? 1 : 0,
+            createDate: new Date(response.createdAt),
+            changeDate: new Date()
+          };
+
+          return user;
+        }),
+        tap(user => {
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 100);

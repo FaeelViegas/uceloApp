@@ -1,20 +1,68 @@
 <div class="auth-container">
-  <div class="auth-card-wrapper">
-    <p-card>
-      <ng-template pTemplate="header">
-        <div class="auth-header">
-          <h1>LOGIN</h1>
-          <p>Faça login em sua conta</p>
+  <div class="auth-card">
+    <!-- Cabeçalho -->
+    <div class="auth-header">
+      <img src="assets/icons/logouceloazul.png" alt="Ucelo Logo" class="logo">
+      <h2 class="title">Ucelo Services</h2>
+      <p class="subtitle">Bem-vindo de volta! Faça login para continuar:</p>
+    </div>
+
+    <!-- Formulário -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-container">
+      <div class="form-fields">
+        <!-- Email ou CPF -->
+        <div class="form-field">
+          <div class="input-group">
+            <span class="input-icon">
+              <i class="pi pi-envelope"></i>
+            </span>
+            <input id="email" type="text" formControlName="mail" placeholder="Email ou CPF" class="input-control"
+              (input)="formatCPF($event)">
+          </div>
         </div>
-      </ng-template>
 
-      <div class="card-content">
+        <!-- Senha -->
+        <div class="form-field">
+          <div class="input-group">
+            <span class="input-icon">
+              <i class="pi pi-lock"></i>
+            </span>
+            <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="pwd" placeholder="Senha"
+              class="input-control">
 
+            <!-- Botão mostrar/esconder senha -->
+            <button type="button" (click)="togglePasswordVisibility()" class="password-toggle">
+              <i class="pi" [ngClass]="showPassword ? 'pi-eye-slash' : 'pi-eye'"></i>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <ng-template pTemplate="footer">
+      <!-- Lembrar senha e Esqueci senha -->
+      <div class="remember-forgot">
+        <div class="remember-me">
+          <p-checkbox formControlName="remember" [binary]="true" inputId="remember"></p-checkbox>
+          <label for="remember">Lembrar minha senha</label>
+        </div>
+        <a (click)="forgotPassword()" class="forgot-password">Esqueci minha senha</a>
+      </div>
 
-      </ng-template>
-    </p-card>
+      <!-- Botão Login -->
+      <button type="submit" class="login-button" [disabled]="loading">
+        <i *ngIf="loading" class="pi pi-spin pi-spinner button-icon"></i>
+        <span>Login</span>
+      </button>
+
+      <!-- Link para cadastro -->
+      <div class="register-link">
+        <span>Não tem uma conta? </span>
+        <a (click)="navigateToRegister()">Cadastre-se</a>
+      </div>
+    </form>
+
+    <!-- Rodapé -->
+    <div class="auth-footer">
+      <p class="copyright">©2025 Ucelo Services. Todos os direitos reservados.</p>
+    </div>
   </div>
 </div>

@@ -1,0 +1,259 @@
+$sidebar-width-expanded: 240px;
+$sidebar-width-collapsed: 64px;
+$primary-color: #0d7ff2;
+$bg-color: #f8f9fa;
+$border-color: #e9ecef;
+$text-color: #495057;
+$disabled-color: #adb5bd;
+$hover-color: rgba(13, 127, 242, 0.05);
+$active-color: rgba(13, 127, 242, 0.1);
+$transition-time: 0.25s;
+$mobile-breakpoint: 768px;
+
+// Container principal do sidebar
+.sidebar {
+    width: $sidebar-width-collapsed;
+    height: 100vh;
+    background-color: $bg-color;
+    border-right: 1px solid $border-color;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: visible;
+    transition: width $transition-time ease-in-out;
+
+    // Expande no hover
+    &:hover {
+        width: $sidebar-width-expanded;
+
+        .logo-title,
+        .menu-text {
+            opacity: 1;
+            width: auto;
+        }
+
+        .menu-arrow {
+            opacity: 1;
+            width: auto;
+        }
+    }
+
+    // Mobile sempre expandido
+    @media (max-width: $mobile-breakpoint) {
+        width: $sidebar-width-expanded;
+
+        .logo-title,
+        .menu-text {
+            opacity: 1;
+            width: auto;
+        }
+
+        .menu-arrow {
+            opacity: 1;
+            width: auto;
+        }
+    }
+}
+
+// Cabeçalho
+.sidebar-header {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+    min-height: 96px;
+
+    .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        flex-shrink: 0;
+    }
+
+    .logo-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: $primary-color;
+        text-align: center;
+        white-space: nowrap;
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        transition: opacity $transition-time ease-in-out,
+            width $transition-time ease-in-out;
+    }
+}
+
+// Menu principal
+.sidebar-menu {
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    // Esconder scrollbar mas manter funcionalidade
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 2px;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+    }
+}
+
+// Item de menu (padrão para todos)
+.menu-item,
+.menu-subitem {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    margin: 2px 0;
+    color: $text-color;
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color $transition-time,
+        color $transition-time,
+        transform $transition-time;
+    position: relative;
+
+    &:hover:not(.disabled) {
+        background-color: $hover-color;
+        transform: translateX(2px);
+    }
+
+    &.active {
+        background-color: $active-color;
+        color: $primary-color;
+        font-weight: 500;
+    }
+
+    &.disabled {
+        color: $disabled-color;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    // Ícones
+    .menu-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        flex-shrink: 0;
+
+        i {
+            font-size: 18px;
+        }
+    }
+
+    // Texto do menu
+    .menu-text {
+        flex: 1;
+        font-size: 14px;
+        white-space: nowrap;
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        transition: opacity $transition-time ease-in-out,
+            width $transition-time ease-in-out;
+    }
+
+    // Seta para submenu
+    .menu-arrow {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        transition: transform $transition-time,
+            opacity $transition-time ease-in-out,
+            width $transition-time ease-in-out;
+
+        i {
+            font-size: 12px;
+        }
+    }
+
+    // Quando expandido, rotaciona a seta
+    &.expanded .menu-arrow i {
+        transform: rotate(180deg);
+    }
+}
+
+// Grupo de menu (com submenu)
+.menu-group {
+    position: relative;
+
+    // Hover no item com submenu
+    .menu-item.has-submenu {
+
+        &:hover+.submenu,
+        &.expanded+.submenu {
+            max-height: 200px;
+            opacity: 1;
+        }
+    }
+
+    // Submenu
+    .submenu {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height $transition-time ease-in-out,
+            opacity $transition-time ease-in-out;
+
+        // Quando expandido via classe ou hover
+        &.expanded {
+            max-height: 200px;
+            opacity: 1;
+        }
+    }
+
+    // Hover no grupo expande submenu quando sidebar expandido
+    &:hover .submenu {
+        max-height: 200px;
+        opacity: 1;
+    }
+}
+
+// Item de submenu (variação)
+.menu-subitem {
+    padding-left: 52px;
+
+    .menu-icon i {
+        font-size: 14px;
+    }
+
+    // Ajuste para quando colapsado
+    .sidebar:not(:hover) & {
+        padding-left: 16px;
+    }
+}
+
+// Mobile sempre expandido
+@media (max-width: $mobile-breakpoint) {
+    .sidebar {
+        .menu-arrow {
+            opacity: 1;
+            width: auto;
+        }
+    }
+}
