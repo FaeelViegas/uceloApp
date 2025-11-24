@@ -16,7 +16,7 @@ import {
   standalone: false
 })
 export class ComparisonCalculatorComponent implements OnInit {
-  // Formulário
+  // FormulÃ¡rio
   calculationForm: FormGroup;
 
   // Estados
@@ -26,8 +26,12 @@ export class ComparisonCalculatorComponent implements OnInit {
   calculationName: string = '';
   loadingBuckets = false;
   loadingMaterials = false;
+  
+  // Estados do Insight IA
+  generatingInsight = false;
+  insightError: string | null = null;
 
-  // Resultados e histórico
+  // Resultados e histÃ³rico
   calculationResult: ComparisonCalculationResponse | null = null;
   savedCalculations: ComparisonCalculationResponse[] = [];
   filteredCalculations: ComparisonCalculationResponse[] = [];
@@ -37,12 +41,12 @@ export class ComparisonCalculatorComponent implements OnInit {
   buckets: BucketListItemDto[] = [];
   materials: MaterialDto[] = [];
 
-  // Pesquisa e ordenação
+  // Pesquisa e ordenaÃ§Ã£o
   searchQuery: string = '';
   currentSort: 'date' | 'capacity' = 'date';
   sortDirection: 'asc' | 'desc' = 'desc';
 
-  // Propriedades para os gráficos
+  // Propriedades para os grÃ¡ficos
   barChartData: any = { labels: [], datasets: [] };
   barChartOptions: any = {};
   radarChartData: any = { labels: [], datasets: [] };
@@ -67,9 +71,9 @@ export class ComparisonCalculatorComponent implements OnInit {
   }
 
 
-  // Inicializa opções dos gráficos
+  // Inicializa opÃ§Ãµes dos grÃ¡ficos
   initChartOptions() {
-    // Opções do gráfico de barras
+    // OpÃ§Ãµes do grÃ¡fico de barras
     this.barChartOptions = {
       indexAxis: 'y',
       responsive: true,
@@ -94,7 +98,7 @@ export class ComparisonCalculatorComponent implements OnInit {
       }
     };
 
-    // Opções do gráfico de radar
+    // OpÃ§Ãµes do grÃ¡fico de radar
     this.radarChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
@@ -142,7 +146,7 @@ export class ComparisonCalculatorComponent implements OnInit {
       next: (buckets) => {
         this.buckets = buckets;
 
-        // Preparar as opções para os dropdowns
+        // Preparar as opÃ§Ãµes para os dropdowns
         this.bucketOptions = buckets.map(bucket => {
           return {
             label: `${bucket.code} (${bucket.dimensions}) - ${bucket.materialName}`,
@@ -158,7 +162,7 @@ export class ComparisonCalculatorComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível carregar a lista de canecas.'
+          detail: 'NÃ£o foi possÃ­vel carregar a lista de canecas.'
         });
       }
     });
@@ -177,7 +181,7 @@ export class ComparisonCalculatorComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível carregar a lista de materiais.'
+          detail: 'NÃ£o foi possÃ­vel carregar a lista de materiais.'
         });
       }
     });
@@ -190,11 +194,11 @@ export class ComparisonCalculatorComponent implements OnInit {
         this.filterCalculations();
       },
       error: (error) => {
-        console.error('Erro ao carregar cálculos salvos:', error);
+        console.error('Erro ao carregar cÃ¡lculos salvos:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível carregar os cálculos salvos.'
+          detail: 'NÃ£o foi possÃ­vel carregar os cÃ¡lculos salvos.'
         });
       }
     });
@@ -205,7 +209,7 @@ export class ComparisonCalculatorComponent implements OnInit {
       this.calculationForm.markAllAsTouched();
       this.messageService.add({
         severity: 'warn',
-        summary: 'Atenção',
+        summary: 'AtenÃ§Ã£o',
         detail: 'Por favor, preencha todos os campos corretamente.'
       });
       return;
@@ -232,17 +236,17 @@ export class ComparisonCalculatorComponent implements OnInit {
     });
   }
 
-  // Prepara os dados para os gráficos
+  // Prepara os dados para os grÃ¡ficos
   prepareChartData() {
     if (!this.calculationResult) return;
 
-    // Dados para o gráfico de barras (características importantes)
+    // Dados para o grÃ¡fico de barras (caracterÃ­sticas importantes)
     const barChartKeys = [
       { key: 'volumeDifference', label: 'Volume' },
       { key: 'capacityDifference', label: 'Capacidade' },
-      { key: 'abrasionResistanceDifference', label: 'Resistência à abrasão' },
-      { key: 'tractionResistanceDifference', label: 'Resistência à tração' },
-      { key: 'pricePerMeterDifference', label: 'Preço por metro' }
+      { key: 'abrasionResistanceDifference', label: 'ResistÃªncia Ã  abrasÃ£o' },
+      { key: 'tractionResistanceDifference', label: 'ResistÃªncia Ã  traÃ§Ã£o' },
+      { key: 'pricePerMeterDifference', label: 'PreÃ§o por metro' }
     ];
 
     const barLabels = barChartKeys.map(item => item.label);
@@ -252,7 +256,7 @@ export class ComparisonCalculatorComponent implements OnInit {
       labels: barLabels,
       datasets: [
         {
-          label: 'Diferença (%)',
+          label: 'DiferenÃ§a (%)',
           data: barData,
           backgroundColor: barData.map(value => value >= 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(255, 99, 132, 0.6)'),
           borderColor: barData.map(value => value >= 0 ? 'rgb(75, 192, 192)' : 'rgb(255, 99, 132)'),
@@ -261,13 +265,13 @@ export class ComparisonCalculatorComponent implements OnInit {
       ]
     };
 
-    // Dados para o gráfico de radar (comparação normalizada)
+    // Dados para o grÃ¡fico de radar (comparaÃ§Ã£o normalizada)
     const radarChartKeys = [
       { key: 'volume', label: 'Volume', normalize: true },
       { key: 'capacity', label: 'Capacidade', normalize: true },
-      { key: 'abrasionResistance', label: 'Resistência à abrasão', normalize: true },
-      { key: 'tractionResistance', label: 'Resistência à tração', normalize: true },
-      { key: 'pricePerMeter', label: 'Preço por metro', normalize: true, invert: true }
+      { key: 'abrasionResistance', label: 'ResistÃªncia Ã  abrasÃ£o', normalize: true },
+      { key: 'tractionResistance', label: 'ResistÃªncia Ã  traÃ§Ã£o', normalize: true },
+      { key: 'pricePerMeter', label: 'PreÃ§o por metro', normalize: true, invert: true }
     ];
 
     const radarLabels = radarChartKeys.map(item => item.label);
@@ -278,7 +282,7 @@ export class ComparisonCalculatorComponent implements OnInit {
       const comparison = this.calculationResult!.comparisonBucket[key];
       const max = Math.max(selected, comparison);
 
-      // Para preço, menor é melhor, então invertemos
+      // Para preÃ§o, menor Ã© melhor, entÃ£o invertemos
       if (invert) {
         return 100 - (value / max * 100);
       }
@@ -333,8 +337,8 @@ export class ComparisonCalculatorComponent implements OnInit {
     if (!this.calculationResult) {
       this.messageService.add({
         severity: 'info',
-        summary: 'Informação',
-        detail: 'Realize um cálculo antes de salvar.'
+        summary: 'InformaÃ§Ã£o',
+        detail: 'Realize um cÃ¡lculo antes de salvar.'
       });
       return;
     }
@@ -349,8 +353,8 @@ export class ComparisonCalculatorComponent implements OnInit {
     if (!this.calculationName.trim()) {
       this.messageService.add({
         severity: 'warn',
-        summary: 'Atenção',
-        detail: 'Digite um nome para o cálculo.'
+        summary: 'AtenÃ§Ã£o',
+        detail: 'Digite um nome para o cÃ¡lculo.'
       });
       return;
     }
@@ -368,17 +372,17 @@ export class ComparisonCalculatorComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: 'Cálculo salvo com sucesso!'
+          detail: 'CÃ¡lculo salvo com sucesso!'
         });
         this.loadSavedCalculations();
       },
       error: (error) => {
-        console.error('Erro ao salvar cálculo:', error);
+        console.error('Erro ao salvar cÃ¡lculo:', error);
         this.saving = false;
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Ocorreu um erro ao salvar o cálculo. Tente novamente.'
+          detail: 'Ocorreu um erro ao salvar o cÃ¡lculo. Tente novamente.'
         });
       }
     });
@@ -397,15 +401,15 @@ export class ComparisonCalculatorComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: 'Cálculo carregado com sucesso!'
+          detail: 'CÃ¡lculo carregado com sucesso!'
         });
       },
       error: (error) => {
-        console.error('Erro ao carregar cálculo:', error);
+        console.error('Erro ao carregar cÃ¡lculo:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Ocorreu um erro ao carregar o cálculo. Tente novamente.'
+          detail: 'Ocorreu um erro ao carregar o cÃ¡lculo. Tente novamente.'
         });
       }
     });
@@ -444,7 +448,7 @@ export class ComparisonCalculatorComponent implements OnInit {
     }
   }
 
-  // Filtragem e ordenação
+  // Filtragem e ordenaÃ§Ã£o
   filterCalculations() {
     let filtered = [...this.savedCalculations];
 
@@ -458,7 +462,7 @@ export class ComparisonCalculatorComponent implements OnInit {
       );
     }
 
-    // Aplicar ordenação
+    // Aplicar ordenaÃ§Ã£o
     filtered = this.sortCalculations(filtered);
 
     this.filteredCalculations = filtered;
@@ -478,18 +482,18 @@ export class ComparisonCalculatorComponent implements OnInit {
         result = a.selectedBucket.capacity - b.selectedBucket.capacity;
       }
 
-      // Inverter se a direção for descendente
+      // Inverter se a direÃ§Ã£o for descendente
       return this.sortDirection === 'asc' ? result : -result;
     });
   }
 
   setSortOrder(field: 'date' | 'capacity') {
-    // Se clicar no mesmo campo, inverte a direção
+    // Se clicar no mesmo campo, inverte a direÃ§Ã£o
     if (this.currentSort === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
       this.currentSort = field;
-      this.sortDirection = 'desc'; // Padrão ao mudar de campo
+      this.sortDirection = 'desc'; // PadrÃ£o ao mudar de campo
     }
 
     this.filterCalculations();
@@ -512,7 +516,7 @@ export class ComparisonCalculatorComponent implements OnInit {
     return `${sign}${value.toFixed(2)}%`;
   }
 
-  // Método para formatar o valor absoluto da diferença
+  // MÃ©todo para formatar o valor absoluto da diferenÃ§a
   formatDifferenceAbs(value: number): string {
     return Math.abs(value).toFixed(2);
   }
@@ -564,7 +568,7 @@ export class ComparisonCalculatorComponent implements OnInit {
     if (searchInput && optionsList) {
       const searchText = searchInput.value.toLowerCase();
 
-      // Filtrar as opções
+      // Filtrar as opÃ§Ãµes
       Array.from(optionsList.children).forEach(option => {
         const optionText = option.textContent?.toLowerCase() || '';
         (option as HTMLElement).style.display = optionText.includes(searchText) ? 'block' : 'none';
@@ -573,7 +577,7 @@ export class ComparisonCalculatorComponent implements OnInit {
   }
 
   selectOption(controlName: string, value: number, dropdownId: string, label: string) {
-    // Atualizar o valor no formulário
+    // Atualizar o valor no formulÃ¡rio
     const control = this.calculationForm.get(controlName);
     if (control) {
       control.setValue(value);
@@ -622,4 +626,66 @@ export class ComparisonCalculatorComponent implements OnInit {
     }
   }
 
+  // Métodos para Insight IA
+  generateInsight(regenerate: boolean = false): void {
+    if (!this.calculationResult?.id) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Atenção',
+        detail: 'Salve o cálculo antes de gerar o insight.'
+      });
+      return;
+    }
+
+    this.generatingInsight = true;
+    this.insightError = null;
+
+    this.calculatorService.generateComparisonInsight(this.calculationResult.id, regenerate).subscribe({
+      next: (result) => {
+        this.calculationResult = result;
+        this.generatingInsight = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Insight gerado com sucesso!'
+        });
+      },
+      error: (error) => {
+        console.error('Erro ao gerar insight:', error);
+        this.generatingInsight = false;
+        this.insightError = 'Não foi possível gerar o insight. Tente novamente.';
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Erro ao gerar insight com IA.'
+        });
+      }
+    });
+  }
+
+  copyInsightToClipboard(): void {
+    if (!this.calculationResult?.insight?.text) return;
+
+    navigator.clipboard.writeText(this.calculationResult.insight.text).then(() => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Copiado',
+        detail: 'Insight copiado para a área de transferência!'
+      });
+    }).catch(() => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não foi possível copiar o texto.'
+      });
+    });
+  }
+
+  exportInsightAsPDF(): void {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Em breve',
+      detail: 'Exportação em PDF será implementada em breve.'
+    });
+  }
 }

@@ -52,4 +52,12 @@ export class CalculatorService {
     getMaterials(): Observable<MaterialDto[]> {
         return this.http.get<MaterialDto[]>(`${environment.apiUrl}/buckets/materials`);
     }
+
+    generateComparisonInsight(calculationId: number, regenerate: boolean = false): Observable<ComparisonCalculationResponse> {
+        return this.http.post<ComparisonCalculationResponse>(
+            `${this.apiUrl}/comparison/${calculationId}/insight`,
+            null,
+            { params: { regenerate: regenerate.toString() } }
+        );
+    }
 }

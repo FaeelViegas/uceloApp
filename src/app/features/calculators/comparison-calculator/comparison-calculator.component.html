@@ -345,9 +345,9 @@
                   </div>
                 </td>
               </tr>
-              <!-- Resistência à abrasão -->
+              <!-- Resistência Ã  abrasão -->
               <tr>
-                <td>Resistência à abrasão</td>
+                <td>Resistência Ã  abrasão</td>
                 <td>{{ calculationResult.selectedBucket.abrasionResistance }}</td>
                 <td>{{ calculationResult.comparisonBucket.abrasionResistance }}</td>
                 <td class="difference"
@@ -362,9 +362,9 @@
                   </div>
                 </td>
               </tr>
-              <!-- Resistência à tração -->
+              <!-- Resistência Ã  tração -->
               <tr>
-                <td>Resistência à tração</td>
+                <td>Resistência Ã  tração</td>
                 <td>{{ calculationResult.selectedBucket.tractionResistance }} N</td>
                 <td>{{ calculationResult.comparisonBucket.tractionResistance }} N</td>
                 <td class="difference"
@@ -509,41 +509,80 @@
             </div>
           </div>
 
-          <!-- Conclusão e recomendação final -->
-          <div class="final-recommendation">
-            <div class="recommendation-header">
-              <i class="pi pi-star"></i>
-              <h3>Conclusão</h3>
+        </div>
+
+        <!-- Seção de Insight com IA -->
+        <div class="ai-insight-section" *ngIf="calculationResult">
+          <!-- Botão para gerar insight (se não existe) -->
+          <div class="insight-generate-container" *ngIf="!calculationResult.insight && !generatingInsight">
+            <button type="button" class="btn-generate-insight" (click)="generateInsight(false)">
+              <i class="pi pi-sparkles"></i>
+              <span>Gerar Insight com IA</span>
+            </button>
+            <p class="insight-description">
+              Obtenha uma análise técnica profissional personalizada comparando estas canecas
+            </p>
+          </div>
+
+          <!-- Loading do insight -->
+          <div class="insight-loading" *ngIf="generatingInsight">
+            <div class="loading-animation">
+              <i class="pi pi-spin pi-spinner"></i>
+            </div>
+            <h3>Gerando análise técnica...</h3>
+            <p>A IA está analisando os dados comparativos. Isso pode levar alguns segundos.</p>
+          </div>
+
+          <!-- Exibição do insight -->
+          <div class="insight-display" *ngIf="calculationResult.insight && !generatingInsight">
+            <div class="insight-header">
+              <div class="insight-title">
+                <i class="pi pi-sparkles"></i>
+                <h3>Análise Técnica com IA</h3>
+              </div>
+              <div class="insight-actions">
+                <button type="button" class="btn-insight-action" (click)="copyInsightToClipboard()"
+                  pTooltip="Copiar texto" tooltipPosition="top">
+                  <i class="pi pi-copy"></i>
+                </button>
+                <button type="button" class="btn-insight-action" (click)="exportInsightAsPDF()"
+                  pTooltip="Exportar PDF" tooltipPosition="top">
+                  <i class="pi pi-file-pdf"></i>
+                </button>
+                <button type="button" class="btn-insight-action" (click)="generateInsight(true)"
+                  pTooltip="Regenerar insight" tooltipPosition="top">
+                  <i class="pi pi-refresh"></i>
+                </button>
+              </div>
             </div>
 
-            <div class="recommendation-text">
-              <p *ngIf="calculationResult.comparisonResult.capacityDifference > 10">
-                A caneca <strong>{{ calculationResult.comparisonBucket.code }}</strong> ({{
-                calculationResult.comparisonBucket.materialName }})
-                oferece uma capacidade {{ formatDifference(calculationResult.comparisonResult.capacityDifference) }}
-                superior, o que pode melhorar significativamente o desempenho.
-              </p>
-              <p
-                *ngIf="calculationResult.comparisonResult.capacityDifference <= 0 && calculationResult.comparisonResult.pricePerMeterDifference < 0">
-                A caneca <strong>{{ calculationResult.selectedBucket.code }}</strong> ({{
-                calculationResult.selectedBucket.materialName }})
-                tem melhor relação custo-benefício, com preço por metro mais baixo e capacidade similar ou superior.
-              </p>
-              <p
-                *ngIf="calculationResult.comparisonResult.tractionResistanceDifference > 20 && calculationResult.comparisonResult.abrasionResistanceDifference > 20">
-                A caneca <strong>{{ calculationResult.comparisonBucket.code }}</strong> ({{
-                calculationResult.comparisonBucket.materialName }})
-                apresenta resistência à tração e abrasão significativamente superiores, sendo mais adequada para
-                materiais
-                abrasivos.
-              </p>
-              <p
-                *ngIf="calculationResult.comparisonResult.tractionResistanceDifference <= 0 && calculationResult.comparisonResult.abrasionResistanceDifference <= 0 && calculationResult.comparisonResult.pricePerMeterDifference <= 0">
-                A caneca <strong>{{ calculationResult.selectedBucket.code }}</strong> ({{
-                calculationResult.selectedBucket.materialName }})
-                apresenta melhor equilíbrio entre resistência mecânica e custo.
-              </p>
+            <div class="insight-content">
+              <div class="insight-text">
+                <p *ngFor="let paragraph of calculationResult.insight.text.split('\n\n')">
+                  {{ paragraph }}
+                </p>
+              </div>
+
+              <div class="insight-metadata">
+                <div class="metadata-item">
+                  <i class="pi pi-calendar"></i>
+                  <span>Gerado em {{ calculationResult.insight.generatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                </div>
+                <div class="metadata-item">
+                  <i class="pi pi-desktop"></i>
+                  <span>Modelo: {{ calculationResult.insight.model }}</span>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <!-- Erro ao gerar insight -->
+          <div class="insight-error" *ngIf="insightError">
+            <i class="pi pi-exclamation-triangle"></i>
+            <p>{{ insightError }}</p>
+            <button type="button" class="btn btn-secondary" (click)="generateInsight(false)">
+              <i class="pi pi-refresh"></i> Tentar novamente
+            </button>
           </div>
         </div>
       </div>

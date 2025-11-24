@@ -74,15 +74,15 @@ export class PowerCalculatorComponent implements OnInit {
   }
 
   calculate() {
-    if (this.calculationForm.invalid) {
-      this.calculationForm.markAllAsTouched();
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Atenção',
-        detail: 'Por favor, preencha todos os campos corretamente.'
-      });
-      return;
-    }
+    // if (this.calculationForm.invalid) {
+    //   this.calculationForm.markAllAsTouched();
+    //   this.messageService.add({
+    //     severity: 'warn',
+    //     summary: 'Atenção',
+    //     detail: 'Por favor, preencha todos os campos corretamente.'
+    //   });
+    //   return;
+    // }
 
     this.calculating = true;
     const request: PowerCalculationRequest = this.calculationForm.value;

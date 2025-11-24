@@ -1,4 +1,4 @@
-// Variáveis
+// VariÃ¡veis
 $primary-color: #0d7ff2;
 $secondary-color: #e9f1fd;
 $text-color: #333;
@@ -7,7 +7,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
 $transition-time: 0.25s;
 $result-bg: #fffdf5;
 
-// Cores para diferenças
+// Cores para diferenÃ§as
 $positive-color: #009900;
 $negative-color: #cc0000;
 $neutral-color: #888888;
@@ -110,7 +110,7 @@ $neutral-color: #888888;
     padding: 20px;
 }
 
-// Título da página
+// TÃ­tulo da pÃ¡gina
 .page-title {
     color: $primary-color;
     font-size: 24px;
@@ -118,7 +118,7 @@ $neutral-color: #888888;
     font-weight: 600;
 }
 
-// Layout do formulário
+// Layout do formulÃ¡rio
 .form-grid {
     display: flex;
     flex-direction: column;
@@ -152,13 +152,13 @@ $neutral-color: #888888;
     margin-left: auto;
     align-self: flex-end;
 
-    // Alinha com a última linha se houver apenas 2 campos nela
+    // Alinha com a Ãºltima linha se houver apenas 2 campos nela
     @media (min-width: 768px) {
         min-width: 200px;
     }
 }
 
-// Estilização dos inputs
+// EstilizaÃ§Ã£o dos inputs
 .input-container {
     position: relative;
     display: flex;
@@ -200,7 +200,7 @@ $neutral-color: #888888;
     }
 }
 
-// Botões de incremento/decremento
+// BotÃµes de incremento/decremento
 .spinner-buttons {
     display: flex;
     flex-direction: column;
@@ -231,7 +231,7 @@ $neutral-color: #888888;
     }
 }
 
-// Estilização do dropdown personalizado
+// EstilizaÃ§Ã£o do dropdown personalizado
 .custom-dropdown-container {
     position: relative;
     width: 100%;
@@ -375,7 +375,7 @@ $neutral-color: #888888;
     }
 }
 
-// Botões
+// BotÃµes
 .btn {
     border: none;
     padding: 8px 16px;
@@ -428,7 +428,7 @@ $neutral-color: #888888;
     }
 }
 
-// Tabela de comparação
+// Tabela de comparaÃ§Ã£o
 .comparison-container {
     overflow-x: auto;
     margin-bottom: 20px;
@@ -536,7 +536,7 @@ $neutral-color: #888888;
     }
 }
 
-// Seção de recomendação
+// SeÃ§Ã£o de recomendaÃ§Ã£o
 .comparison-summary {
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -674,7 +674,7 @@ $neutral-color: #888888;
     }
 }
 
-// Histórico de cálculos
+// HistÃ³rico de cÃ¡lculos
 .search-container {
     position: relative;
     margin-bottom: 16px;
@@ -819,7 +819,7 @@ $neutral-color: #888888;
     }
 }
 
-// Dialog para salvar cálculo
+// Dialog para salvar cÃ¡lculo
 .save-dialog-content {
     margin-bottom: 16px;
 
@@ -844,7 +844,7 @@ $neutral-color: #888888;
     }
 }
 
-// Adiciona este código no final do arquivo CSS para evitar conflitos com click-outside
+// Adiciona este cÃ³digo no final do arquivo CSS para evitar conflitos com click-outside
 .open {
     .dropdown-options {
         max-height: 300px;
@@ -852,5 +852,282 @@ $neutral-color: #888888;
 
     .dropdown-arrow {
         transform: rotate(180deg);
+    }
+}
+
+// ============================================
+// ESTILOS PARA INSIGHT COM IA
+// ============================================
+
+.ai-insight-section {
+    margin-top: 32px;
+    animation: fadeInUp 0.5s ease-out;
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+// Botão de gerar insight
+.insight-generate-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+    transition: transform $transition-time, box-shadow $transition-time;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-generate-insight {
+        background: white;
+        color: #667eea;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        transition: all $transition-time;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+        i {
+            font-size: 24px;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    .insight-description {
+        color: white;
+        margin-top: 16px;
+        font-size: 14px;
+        opacity: 0.95;
+    }
+}
+
+// Loading do insight
+.insight-loading {
+    background: white;
+    border-radius: 12px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+    .loading-animation {
+        margin-bottom: 20px;
+
+        i {
+            font-size: 48px;
+            color: #667eea;
+        }
+    }
+
+    h3 {
+        margin: 0 0 12px 0;
+        color: $text-color;
+        font-size: 20px;
+    }
+
+    p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+    }
+}
+
+// Display do insight
+.insight-display {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 2px solid #667eea;
+
+    .insight-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .insight-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+
+            i {
+                font-size: 24px;
+            }
+
+            h3 {
+                margin: 0;
+                font-size: 20px;
+                font-weight: 600;
+            }
+        }
+
+        .insight-actions {
+            display: flex;
+            gap: 8px;
+
+            .btn-insight-action {
+                background: rgba(255, 255, 255, 0.2);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                color: white;
+                width: 36px;
+                height: 36px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all $transition-time;
+
+                i {
+                    font-size: 16px;
+                }
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(1.05);
+                }
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+        }
+    }
+
+    .insight-content {
+        padding: 32px;
+
+        .insight-text {
+            p {
+                margin: 0 0 20px 0;
+                line-height: 1.8;
+                font-size: 15px;
+                color: $text-color;
+                text-align: justify;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                &:first-letter {
+                    font-size: 1.2em;
+                    font-weight: 600;
+                    color: #667eea;
+                }
+            }
+        }
+
+        .insight-metadata {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e9e9e9;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+
+            .metadata-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: #666;
+                font-size: 13px;
+
+                i {
+                    font-size: 14px;
+                    color: #667eea;
+                }
+            }
+        }
+    }
+}
+
+// Erro ao gerar insight
+.insight-error {
+    background: #fff5f5;
+    border: 2px solid #fc8181;
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+
+    i {
+        font-size: 48px;
+        color: #fc8181;
+        margin-bottom: 16px;
+    }
+
+    p {
+        margin: 0 0 20px 0;
+        color: #c53030;
+        font-size: 16px;
+    }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+    .ai-insight-section {
+        margin-top: 24px;
+    }
+
+    .insight-generate-container {
+        padding: 32px 24px;
+
+        .btn-generate-insight {
+            padding: 14px 24px;
+            font-size: 16px;
+        }
+    }
+
+    .insight-display {
+        .insight-header {
+            flex-direction: column;
+            gap: 16px;
+            align-items: flex-start;
+
+            .insight-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .insight-content {
+            padding: 24px;
+
+            .insight-text p {
+                text-align: left;
+            }
+
+            .insight-metadata {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
     }
 }

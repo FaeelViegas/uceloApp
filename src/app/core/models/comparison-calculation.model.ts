@@ -2,32 +2,25 @@
 export interface ComparisonCalculationRequest {
     id?: number;
     name?: string;
-
-    speed: number;             // Velocidade (m/s)
-    productDensity: number;    // Densidade do produto (kg/m³)
-    numberOfRows?: number;     // Nº de fileiras
-    pitch?: number;            // Passo (mm)
-    filling?: number;          // Enchimento (%)
-    selectedBucketUnitPrice?: number;  // Preço/Unidade da caneca selecionada
-    comparisonBucketUnitPrice?: number; // Preço/Unidade da caneca de comparação
-    selectedBucketId: number;  // ID da caneca selecionada
-    comparisonBucketId: number;// ID da caneca para comparação
+    speed: number;
+    productDensity: number;
+    numberOfRows?: number;
+    pitch?: number;
+    filling?: number;
+    selectedBucketUnitPrice?: number;
+    comparisonBucketUnitPrice?: number;
+    selectedBucketId: number;
+    comparisonBucketId: number;
 }
 
 export interface ComparisonCalculationResponse {
     id?: number;
     name?: string;
-
-    // Dados da caneca selecionada
     selectedBucket: BucketDetailsDto;
-
-    // Dados da caneca para comparação
     comparisonBucket: BucketDetailsDto;
-
-    // Diferenças calculadas
     comparisonResult: ComparisonResultDto;
-
     calculatedAt?: Date;
+    insight?: InsightDto;
 }
 
 export interface BucketDetailsDto {
@@ -79,4 +72,10 @@ export interface BucketListItemDto {
 export interface MaterialDto {
     id: number;
     name: string;
+}
+
+export interface InsightDto {
+    text: string;
+    generatedAt: Date;
+    model: string;
 }
